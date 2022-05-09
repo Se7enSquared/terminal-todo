@@ -1,12 +1,17 @@
 import typer
 from datetime import datetime
+import sqlite3
+from dbmanager import DatabaseManager
 
 app = typer.Typer()
 
 @app.command()
 def init(dbname: str):
-    #initialize new todo db
-    pass
+    try:
+        DatabaseManager.check_database(dbname)
+    except sqlite3.OperationalError:
+        DatabaseManager(dbname)
+
 
 @app.command()
 def add(item: str, priority: int, due: datetime, status='new'):
