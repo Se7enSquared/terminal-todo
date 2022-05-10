@@ -4,10 +4,10 @@ from rich.console import Console
 from rich.table import Table
 
 STATUS_PREFIXES = {
-    "New": "[ ]",
-    "In Progress": "[>]",
-    "Done": "[X]",
-    "Cancelled": "[-]",
+    "New":          "[ ]",
+    "In Progress":  "[>]",
+    "Done":         "[X]",
+    "Cancelled":    "[-]",
 }
 
 console = Console()
@@ -41,8 +41,8 @@ def lst():
         task("Submit timecard", "Work", "Cancelled"),
     ]
 
-    for task in tasks:
-        console.print(f"{STATUS_PREFIXES[task.status]} {task[0]} [{task[1]}]")
+    for id, task in enumerate(tasks):
+        console.print(f"{id}: {STATUS_PREFIXES[task.status]} {task[0]} [{task[1]}]")
 
 
 if __name__ == "__main__":
