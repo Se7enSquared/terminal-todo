@@ -1,47 +1,49 @@
 import typer
-from datetime import datetime
-import sqlite3
-from dbmanager import DatabaseManager
+from collections import namedtuple
+from rich.console import Console
+from rich.table import Table
 
+STATUS_PREFIXES = {
+    "New": "[ ]",
+    "In Progress": "[>]",
+    "Done": "[X]",
+    "Cancelled": "[-]",
+}
+
+console = Console()
 app = typer.Typer()
 
+
 @app.command()
-def init(dbname: str):
-    try:
-        DatabaseManager.check_database(dbname)
-    except sqlite3.OperationalError:
-        DatabaseManager(dbname)
+def add(task: str, tag: str):
+    typer.echo(f'"{task}" added in {tag}')
 
 
 @app.command()
-def add(item: str, priority: int, due: datetime, status='new'):
-    #add todo
-    #id = biggest id + 1
-    #item
-    #priority in 1, 2, 3
-    #due date
-    #status in new, in progress, done
-    pass
+def delete(index: int):
+    typer.echo(f"{index} deleted")
+
 
 @app.command()
-def list():
-    #show all todo
-    pass
+def edit(index: int, task: str = None, tag: str = None):
+    typer.echo(f"{index} edited")
+
 
 @app.command()
-def done(id: int):
-    #mark done
-    pass
+def lst():
 
-@app.command()
-def delete(id:int):
-    #delete given todo
-    pass
+    task = namedtuple("task", "task category status")
 
-@app.command()
-def clear():
-    #clear all todo
-    pass
+    tasks = [
+        task("Finish Report and Email to Boss", "Work", "New"),
+        task("Look for lost keys", "Personal", "Done"),
+        task("Set doc appointment for annie", "Personal", "In Progress"),
+        task("Submit timecard", "Work", "Cancelled"),
+    ]
 
-if __name__ == '__main__':
+    for task in tasks:
+        console.print(f"{STATUS_PREFIXES[task.status]} {task[0]} [{task[1]}]")
+
+
+if __name__ == "__main__":
     app()
