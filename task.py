@@ -17,6 +17,17 @@ class Task:
         self.tag = tag
         self.status = status
 
+    # UNTESTED
+    def edit(self, task: str = None, tag: str = None, 
+            status: str = None) -> str:
+        if task is not None:
+            self.task = task
+        if tag is not None:
+            self.tag = tag
+        if status is not None:
+            self.status = status
+        return self.__str__
+
     def encode(self):
         return self.__dict__
 
