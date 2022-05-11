@@ -1,22 +1,29 @@
-import typer
+import json
 from collections import namedtuple
-from rich.console import Console
-from rich.table import Table
+from os import remove
+from os.path import exists
 
-STATUS_PREFIXES = {
-    "New":          "[ ]",
-    "In Progress":  "[>]",
-    "Done":         "[X]",
-    "Cancelled":    "[-]",
-}
+import typer
+from rich.console import Console
+
+from task import Task
 
 console = Console()
 app = typer.Typer()
 
 
 @app.command()
-def add(task: str, tag: str):
-    typer.echo(f'"{task}" added in {tag}')
+def add(task: str, category: str):
+    if exists("./data/tasks.json"):
+        with open("./data/tasks.json") as f:
+            task_list = json.load(f)
+    else:
+        task_list = []
+    id = len(task_list)
+    task = Task(id, task, category, "new")
+    task_list.append(task)
+    with open("./data/tasks.json", "w") as f:
+        json.dump(task_list, f, default=lambda obj: obj.encode(), indent=4)
 
 
 @app.command()
@@ -31,18 +38,7 @@ def edit(index: int, task: str = None, tag: str = None):
 
 @app.command()
 def lst():
-
-    task = namedtuple("task", "task category status")
-
-    tasks = [
-        task("Finish Report and Email to Boss", "Work", "New"),
-        task("Look for lost keys", "Personal", "Done"),
-        task("Set doc appointment for annie", "Personal", "In Progress"),
-        task("Submit timecard", "Work", "Cancelled"),
-    ]
-
-    for id, task in enumerate(tasks):
-        console.print(f"{id}: {STATUS_PREFIXES[task.status]} {task[0]} [{task[1]}]")
+    pass
 
 
 if __name__ == "__main__":
