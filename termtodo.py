@@ -31,8 +31,12 @@ def add(task: str, category: str):
 
 @app.command()
 def delete(index: int):
-    typer.echo(f"{index} deleted")
-
+    task_list = _load_tasks()
+    for i, task in enumerate(task_list):
+        if task.id == index:
+             del task_list[i]
+    with open("./data/tasks.json", "w") as f:
+        json.dump(task_list, f, default=lambda obj: obj.encode(), indent=4)
 
 @app.command()
 def edit(index: int, task: str = None, tag: str = None):
