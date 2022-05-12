@@ -11,14 +11,17 @@ from task import Task
 console = Console()
 app = typer.Typer()
 
+def _load_tasks():
+    if exists("./data/tasks.json"):
+        with open("./data/tasks.json") as f:
+            task_list = json.load(f, object_hook=Task.decode)
+    else:
+        task_list = []
+    return task_list
 
 @app.command()
 def add(task: str, category: str):
-    if exists("./data/tasks.json"):
-        with open("./data/tasks.json") as f:
-            task_list = json.load(f)
-    else:
-        task_list = []
+    task_list = _load_tasks()
     id = len(task_list)
     task = Task(id, task, category, "new")
     task_list.append(task)
