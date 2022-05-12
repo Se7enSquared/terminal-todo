@@ -1,11 +1,11 @@
 import json
-from sqlite3 import dbapi2
-import pytest
-from termtodo import add, delete, edit, lst
-from os.path import exists
 from os import remove
+from os.path import exists
+
+import pytest
 
 from task import Task
+from termtodo import add, delete, edit, lst
 
 
 @pytest.fixture(scope='module')
