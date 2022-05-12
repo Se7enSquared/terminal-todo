@@ -31,7 +31,15 @@ class Task:
     def encode(self):
         return self.__dict__
 
+    @staticmethod
+    def decode(json_dct):
+      return Task(json_dct['id'],
+                   json_dct['task'], 
+                   json_dct['tag'],
+                   json_dct['status'])
+
     def __str__(self):
         return (
             f"{self.id}: {STATUS_PREFIXES[self.status]} {self.task} [{self.tag}]"
         )
+
