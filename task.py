@@ -12,22 +12,22 @@ STATUS_PREFIXES = {
 
 
 class Task:
-    def __init__(self, id: int, task: str, tag: str, status: str):
-
+    def __init__(self, id: int, text: str, tag: str, status=None):
         self.id = id
-        self.task = task
+        self.text = text
         self.tag = tag
-        self.status = status
-
-    # UNTESTED
-    def edit(self, task: str = None, tag: str = None, status: str = None) -> str:
-        if task is not None:
-            self.task = task
-        if tag is not None:
-            self.tag = tag
         if status is not None:
             self.status = status
-        return self.__str__()
+        else:
+            self.status = STATUSES[1]
+
+    def edit(self, task: str, tag: str, status: str):
+        if task is not None:
+            self.text = task
+        if status is not None:
+            self.status = status
+        if tag is not None:
+            self.tag = tag
 
     def encode(self):
         return self.__dict__
