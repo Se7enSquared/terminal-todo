@@ -19,14 +19,19 @@ def _load_tasks():
         task_list = []
     return task_list
 
-@app.command()
-def add(task: str, category: str):
-    task_list = _load_tasks()
-    id = len(task_list)
-    task = Task(id, task, category, "new")
-    task_list.append(task)
+
+def _dump_tasks(task_list):
     with open("./data/tasks.json", "w") as f:
         json.dump(task_list, f, default=lambda obj: obj.encode(), indent=4)
+
+
+@app.command()
+def add(task: str, tag: str):
+    task_list = _load_tasks()
+    id = len(task_list)
+    task = Task(id, task, tag)
+    task_list.append(task)
+    _dump_tasks(task_list)
 
 
 @app.command()
