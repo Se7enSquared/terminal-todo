@@ -11,6 +11,7 @@ from task import Task
 console = Console()
 app = typer.Typer()
 
+
 def _load_tasks():
     if exists("./data/tasks.json"):
         with open("./data/tasks.json") as f:
@@ -39,13 +40,27 @@ def delete(index: int):
     task_list = _load_tasks()
     for i, task in enumerate(task_list):
         if task.id == index:
-             del task_list[i]
-    with open("./data/tasks.json", "w") as f:
-        json.dump(task_list, f, default=lambda obj: obj.encode(), indent=4)
+            del task_list[i]
+    _dump_tasks(task_list)
+
 
 @app.command()
-def edit(index: int, task: str = None, tag: str = None):
-    typer.echo(f"{index} edited")
+def edit(
+    id: int,
+    text: str = typer.Option(None, help="set task text"),
+    tag: str = typer.Option(None, help="set task tag"),
+    status: str = typer.Option(None, help="set status"),
+):
+    task_list = _load_tasks()
+    for i, task in enumerate(task_list):
+        if task.id == int(id):
+            target_task = task
+            del task_list[i]
+            break
+    target_task.edit(text, tag, status)
+    task_list.append(target_task)
+    _dump_tasks(task_list)
+    typer.echo(f"Task id# {task.id} edited")
 
 
 @app.command()
