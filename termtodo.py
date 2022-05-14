@@ -28,6 +28,7 @@ def _dump_tasks(task_list):
 
 @app.command()
 def add(task: str, tag: str):
+    """Add a new task | command: add description tag"""
     task_list = _load_tasks()
     id = len(task_list)
     task = Task(id, task, tag)
@@ -37,10 +38,13 @@ def add(task: str, tag: str):
 
 @app.command()
 def delete(index: int):
+    """delete task | command: delete id"""
     task_list = _load_tasks()
+    lst()
     for i, task in enumerate(task_list):
         if task.id == index:
             del task_list[i]
+    lst()
     _dump_tasks(task_list)
 
 
@@ -51,7 +55,9 @@ def edit(
     tag: str = typer.Option(None, help="set task tag"),
     status: str = typer.Option(None, help="set status"),
 ):
+    """edit given task and specified attr | command edit id text= tag=..."""
     task_list = _load_tasks()
+    lst()
     for i, task in enumerate(task_list):
         if task.id == int(id):
             target_task = task
@@ -59,13 +65,20 @@ def edit(
             break
     target_task.edit(text, tag, status)
     task_list.append(target_task)
-    _dump_tasks(task_list)
     typer.echo(f"Task id# {task.id} edited")
+    _dump_tasks(task_list)
+    lst()
 
 
 @app.command()
 def lst():
-    pass
+    """display the task list No args."""
+    task_list = _load_tasks()
+    print(
+        "\nT A S K  L I S T\n----------------\n\n")
+    for task in task_list:
+        print(task)
+    print("\n=================================================================\n")
 
 
 if __name__ == "__main__":
