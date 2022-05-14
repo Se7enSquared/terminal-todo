@@ -10,6 +10,7 @@ STATUS_PREFIXES = {
     "Cancelled": "[-]",
 }
 
+
 class Task:
     def __init__(self, id: int, text: str, tag: str, status=None):
         self.id = id
