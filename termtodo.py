@@ -59,7 +59,7 @@ def edit(
     task_list = _load_tasks()
     lst()
     for i, task in enumerate(task_list):
-        if task.id == int(id):
+        if task.id == id:
             target_task = task
             del task_list[i]
             break
