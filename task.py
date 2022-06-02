@@ -16,10 +16,7 @@ class Task:
         self.id = id
         self.text = text
         self.tag = tag
-        if status is not None:
-            self.status = status
-        else:
-            self.status = STATUSES[1]
+        self.status = status if status is not None else STATUSES[1]
 
     def edit(self, task: str, tag: str, status: str):
         if task is not None:
